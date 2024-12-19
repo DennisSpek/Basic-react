@@ -1,4 +1,4 @@
-const GetMovie = async ({ id }: { id: string }) => {
+const GetMovie = async (id: string): Promise<IMDBMovie | null> => {
   try {
     const response = await fetch(
       `https://www.omdbapi.com/?apikey=1a993ee0&i=${encodeURIComponent(id)}`
@@ -9,8 +9,6 @@ const GetMovie = async ({ id }: { id: string }) => {
     }
 
     const data = await response.json();
-
-    console.log('data', data);
 
     if (data.Error) {
       return null;

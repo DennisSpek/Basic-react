@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface props {
   onSearch: (e: string) => void;
@@ -8,10 +8,13 @@ interface props {
 const Search = ({ onSearch }: props) => {
   const [value, setValue] = useState<string>('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    if (value && location.pathname !== '/') {
+      navigate('/');
+    }
     onSearch(value);
-    navigate('/');
   }, [value]);
 
   return (

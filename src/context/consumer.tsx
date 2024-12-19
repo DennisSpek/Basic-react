@@ -1,14 +1,17 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, ReactNode, useContext } from 'react';
 
-interface onboardingContextType {
-  step: number;
-  setStep: (step: number) => void;
+interface propsI {
+  favoriteMovies: IMDBMovie[];
+  addFavorite: (movie: IMDBMovie) => void;
+  removeFavorite: (movie: IMDBMovie) => void;
+  editFavorite: (data: Partial<IMDBMovie>, id: string) => void;
 }
 
-// Create the UserContext with the initial values.
-export const onboardingContext = createContext<onboardingContextType>({
-  step: 1,
-  setStep: () => {},
+export const FavoriteMoviesContext = createContext<propsI>({
+  favoriteMovies: [],
+  addFavorite: () => {},
+  removeFavorite: () => {},
+  editFavorite: () => {},
 });
 
-export const useOnboarding = () => useContext(onboardingContext);
+export const useFavoriteMovies = () => useContext(FavoriteMoviesContext);

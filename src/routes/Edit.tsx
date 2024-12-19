@@ -1,16 +1,56 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
+import { useFavoriteMovies } from '../context/consumer';
+import { useParams } from 'react-router-dom';
 
 const Edit: FunctionComponent = () => {
+  const [movie, setMovie] = useState<IMDBMovie | null>(null);
+  const [formData, setFormData] = useState({
+    Title: '',
+    Year: '',
+    Actors: '',
+  });
+  const { id } = useParams();
+  const { favoriteMovies, editFavorite } = useFavoriteMovies();
+
+  useEffect(() => {
+    const movie = favoriteMovies.find((movie) => movie.imdbID === id);
+
+    console.log("movie", movie);
+    if (movie) {
+      setMovie(movie);
+      setFormData({
+        Title: movie.Title,
+        Year: movie.Year,
+        Actors: movie.Actors,
+      });
+    }
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
+    console.log("name", name, value);
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    editFavorite(formData, id);
+  };
+
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
           <div>
             <div className="w-full aspect-w-1 aspect-h-1">
-              <img className="w-full h-full object-center object-cover sm:rounded-lg" />
+              <img className="w-full h-full object-center object-cover sm:rounded-lg" src={movie?.Poster}/>
             </div>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
               <div className="mb-8">
                 <label className="block text-sm font-medium text-gray-700">
@@ -21,6 +61,9 @@ const Edit: FunctionComponent = () => {
                     name="Title"
                     type="text"
                     className="shadow-sm p-2 block w-full sm:text-sm border-gray-300 rounded-md"
+                    value={formData.Title}
+                    onChange={handleChange}
+                    placeholder={movie?.Title}
                   />
                 </div>
               </div>
@@ -34,6 +77,9 @@ const Edit: FunctionComponent = () => {
                     name="Year"
                     type="text"
                     className="shadow-sm p-2 block w-full sm:text-sm border-gray-300 rounded-md"
+                    value={formData.Year}
+                    onChange={handleChange}
+                    placeholder={movie?.Year}
                   />
                 </div>
               </div>
@@ -47,6 +93,9 @@ const Edit: FunctionComponent = () => {
                     name="Actors"
                     type="text"
                     className="shadow-sm p-2 block w-full sm:text-sm border-gray-300 rounded-md"
+                    value={formData.Actors}
+                    onChange={handleChange}
+                    placeholder={movie?.Actors}
                   />
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Search from './components/Search';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import SearchMovies from '/src/lib/searchMovies';
 
 import Home from '/src/routes/Home';
@@ -47,16 +47,25 @@ const App = () => {
               aria-label="Sidebar"
               className="sticky top-4 divide-y divide-gray-300"
             >
-              <div className="pb-8 space-y-1">{/* navigation */}</div>
+              <div className="pb-8 space-y-1 flex flex-col gap-1">
+                <Link to={`/`}>
+                  <div className='bg-gray-300 rounded p-2'>
+                    Home
+                  </div>
+                </Link>
+                <Link to={`/favorite`}>
+                  <div className='bg-gray-300 rounded p-2'>Favorites</div>
+                </Link>
+              </div>
             </nav>
           </div>
           <main className="lg:col-span-9">
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Home results={list} />} />
-                <Route path="/details/:id" element={<Detail />} />
-              </Routes>
-            </BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home results={list} />} />
+              <Route path="/details/:id" element={<Detail />} />
+              <Route path="/favorite" element={<Favorites />} />
+              <Route path="/favorite/:id" element={<Edit />} />
+            </Routes>
           </main>
         </div>
       </div>
