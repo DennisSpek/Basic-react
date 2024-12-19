@@ -1,6 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 import { useFavoriteMovies } from '../context/consumer';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Edit: FunctionComponent = () => {
   const [movie, setMovie] = useState<IMDBMovie | null>(null);
@@ -11,11 +11,11 @@ const Edit: FunctionComponent = () => {
   });
   const { id } = useParams();
   const { favoriteMovies, editFavorite } = useFavoriteMovies();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const movie = favoriteMovies.find((movie) => movie.imdbID === id);
 
-    console.log("movie", movie);
     if (movie) {
       setMovie(movie);
       setFormData({
@@ -28,7 +28,7 @@ const Edit: FunctionComponent = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.currentTarget;
-    console.log("name", name, value);
+
     setFormData({
       ...formData,
       [name]: value,
@@ -39,6 +39,7 @@ const Edit: FunctionComponent = () => {
     e.preventDefault();
 
     editFavorite(formData, id);
+    navigate(-1);
   };
 
   return (

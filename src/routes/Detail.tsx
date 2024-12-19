@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import Toggle from '../components/Toggle';
 import { useParams, useNavigate } from 'react-router-dom';
-import GetMovie from '../lib/GetMovie';
+import GetMovie from '../lib/getMovie';
 import { useFavoriteMovies } from '../context/consumer';
 import Spinner from '../components/Spinner';
 
@@ -16,10 +16,12 @@ const Detail: FunctionComponent = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const data = await GetMovie(id);
+      if(id){
+        const data = await GetMovie(id);
 
-      if(data) {
-        setDetails(data);
+        if(data) {
+          setDetails(data);
+        }
       }
       setLoading(false);
     })();
