@@ -39,7 +39,7 @@ const Edit: FunctionComponent = () => {
     e.preventDefault();
 
     editFavorite(formData, id);
-    navigate(-1);
+    navigate(-1); 
   };
 
   return (

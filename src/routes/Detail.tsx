@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState, useCallback } from 'react';
 import Toggle from '../components/Toggle';
 import { useParams, useNavigate } from 'react-router-dom';
 import GetMovie from '../lib/getMovie';
@@ -14,18 +14,20 @@ const Detail: FunctionComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      if(id){
-        const data = await GetMovie(id);
-
-        if(data) {
-          setDetails(data);
-        }
-      }
-      setLoading(false);
-    })();
+    fetchMovie();
   }, [id]);
+
+  const fetchMovie = async () => {
+    setLoading(true);
+    if(id){
+      const data = await GetMovie(id);
+
+      if(data) {
+        setDetails(data);
+      }
+    }
+    setLoading(false);
+  }
 
   const handleFavorite = () => {
     if(isFavorite) {
